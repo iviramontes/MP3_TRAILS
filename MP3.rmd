@@ -15,6 +15,7 @@ download.file(url, destfile = local_file)
 unzip(local_file, exdir = "contours250k")
 ```
 ```{r}
+library(sf)
 dsn <- path.expand("contours250k")
 dsn
 list.files(dsn)
@@ -62,21 +63,35 @@ forests_aea <- macleish_layers[["forests"]] %>%
   st_transform(proj4_aea)
 st_area(forests_aea)
 
+#buildings
+macleish_layers[["buildings"]] %>%
+  st_area()
+buildings_aea <- macleish_layers[["buildings"]] %>%
+  st_transform(proj4_aea)
+st_area(buildings_aea)
+
 macleish_layers[["trails"]] %>%
   st_intersects(macleish_layers[["streams"]]) 
-
 macleish_layers[["trails"]]%>%
   st_intersects(macleish_layers[["forests"]]) 
+macleish_layers[["trails"]]%>%
+  st_intersects(macleish_layers[["buildings"]]) 
 
 macleish_layers[["trails"]] %>%
   st_crosses(macleish_layers[["streams"]]) 
 macleish_layers[["trails"]]%>%
-  st_crosses(macleish_layers[["forests"]]) 
+  st_crosses(macleish_layers[["forests"]])
+macleish_layers[["trails"]]%>%
+  st_crosses(macleish_layers[["buildings"]])
 
 leaflet() %>%
   addTiles() %>%
   addPolylines(data = macleish_layers[["streams"]]) %>%
-  addPolylines(data = macleish_layers[["trails"]], color = "brown") %>% addPolylines(data = macleish_layers[["forests"]], color = "green")
+  addPolylines(data = macleish_layers[["trails"]], color = "brown") %>%
+  addPolygons(data = macleish_layers[["forests"]], 
+              weight = 1, fillOpacity = 0.2, popup = ~ Sheet1__Na, color = "green") %>%
+  addPolygons(data = macleish_layers[["buildings"]], 
+              weight = 1, popup = ~name, color = "red")
 ```
 
 
