@@ -1,0 +1,13 @@
+---
+title: "MP3 TRAILS."
+author: "Guadalupe Chimil"
+date: "4/10/2018"
+output: html_document
+---
+
+```{r}
+library(tidyverse) 
+install.packages("macleish")
+
+
+```
