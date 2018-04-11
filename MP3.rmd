@@ -8,12 +8,13 @@ MacLeish has approximately four miles of built trail for use by field station vi
 Supporting data includes:
 
 
-```{r eval= FALSE} 
+```{r eval= FALSE}
 url <- "http://wsgw.mass.gov/data/gispub/shape/state/contours250k.zip"
-local_file <- basename(url)
-download.file(url, destfile = local_file)  
-unzip(local_file, exdir = "contours250k")
-```
+local_file <- basename(url)  
+download.file(url, destfile = local_file)   
+unzip(local_file, exdir = "contours250k")  
+``` 
+
 ```{r}
 dsn <- path.expand("contours250k")
 dsn
@@ -25,16 +26,18 @@ elevation_trails %>%
   select(CONTOUR_FT) %>%
   plot()
 
-st_crs(elevation_trails)
+st_crs(elevation_trails) 
+
 ```
 
 ```{r} 
+
 library(tidyverse) 
 library(macleish)  
 library(sf) 
 library(leaflet)
 library(lwgeom)
-#annah
+
 
 #macleish trails, stream and etc
 #trails
@@ -76,7 +79,8 @@ macleish_layers[["trails"]]%>%
 leaflet() %>%
   addTiles() %>%
   addPolylines(data = macleish_layers[["streams"]]) %>%
-  addPolylines(data = macleish_layers[["trails"]], color = "brown") %>% addPolylines(data = macleish_layers[["forests"]], color = "green")
+  addPolylines(data = macleish_layers[["trails"]], color = "brown") %>% addPolylines(data = macleish_layers[["forests"]], color = "green") 
+
 ```
 
 
