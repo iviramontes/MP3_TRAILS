@@ -7,7 +7,7 @@ output:
     df_print: paged 
     code_folding: hide 
 ---
-
+Sap from maple trees is collected and boiled down to produce maple syrup. Collection occurs in the early spring, during “sugaring season”. In order for the sap to run, temperatures must be above freezing during the day and below freezing at night. As spring temperatures in New England are notoriously variable, so too is the sugaring yield. Climate change also affects the beginning of spring. Use the maple_sap data on gallons of sap collected and the weather data to predict the start date, end date, and yield for sugaring season. Since you only have a few years worth of data on temperature and sap, you may need to consult external data to deepen your analysis.
 ```{r}
 
 ```
