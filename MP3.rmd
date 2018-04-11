@@ -3,6 +3,7 @@ title: "Mini Project 3"
 author: "Guadalupe Chimil, Annah Lee, Ivette Viramontes"
 date: "4/10/2018"
 output: html_document
+df_print: paged
 ---
 MacLeish has approximately four miles of built trail for use by field station visitors. We would like to be able to classify these trails as “Easy,” “Moderate,” or “Difficult” based on their length and change in elevation. Use the spatial data to develop a heuristic that will classify these (or any other) trails based on their difficulty.
 Supporting data includes:
@@ -14,6 +15,20 @@ local_file <- basename(url)
 download.file(url, destfile = local_file)   
 unzip(local_file, exdir = "contours250k")  
 ``` 
+```{r}
+library(sf)
+contours <- st_read("../../contours250k/CONTOURS250K_ARC.shp")
+dim(contours)
+```
+```{r}
+# devtools::install_github("beanumber/macleish")
+library(macleish)
+library(devtools)
+packageVersion("macleish")
+names(macleish_layers)
+```
+
+
 
 ```{r}
 library(sf)
@@ -90,14 +105,13 @@ macleish_layers[["trails"]]%>%
 leaflet() %>%
   addTiles() %>%
   addPolylines(data = macleish_layers[["streams"]]) %>%
-<<<<<<< HEAD
   addPolylines(data = macleish_layers[["trails"]], color = "brown") %>%
   addPolygons(data = macleish_layers[["forests"]], 
               weight = 1, fillOpacity = 0.2, popup = ~ Sheet1__Na, color = "green") %>%
   addPolygons(data = macleish_layers[["buildings"]], 
-              weight = 1, popup = ~name, color = "red")
-=======
-  addPolylines(data = macleish_layers[["trails"]], color = "brown") %>% addPolylines(data = macleish_layers[["forests"]], color = "green") 
+              weight = 1, popup = ~name, color = "red") %>%
+  addPolygons(data = macleish_layers[["trails"]], 
+              weight = 1, popup = ~name, color = "brown")
 
 ```
 
