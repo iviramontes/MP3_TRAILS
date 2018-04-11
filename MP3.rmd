@@ -7,8 +7,12 @@ output: html_document
 df_print: paged
 =======
 output: 
+<<<<<<< HEAD
+html_document:
+df_print: paged 
+=======
   html_document:
-    code_folding: hide
+    code_folding: hide 
 
 >>>>>>> decbfc4a70f29799fa6440a5adfd6f36d7735f53
 ---
@@ -17,8 +21,8 @@ Supporting data includes:
 
 
 ```{r eval= FALSE}
-url <- "http://wsgw.mass.gov/data/gispub/shape/state/contours250k.zip"
-local_file <- basename(url)  
+url <- "http://wsgw.mass.gov/data/gispub/shape/state/contours250k.zip" 
+local_file <- basename(url)   
 download.file(url, destfile = local_file)   
 unzip(local_file, exdir = "contours250k")  
 ``` 
@@ -41,6 +45,12 @@ filter, intersect, join, to modify contour
 
 
 ```{r}
+<<<<<<< HEAD
+dsn <- path.expand("contours250k") 
+dsn 
+list.files(dsn) 
+st_layers(dsn) 
+=======
 library(sf)
 contours <- st_read("../../contours250k/CONTOURS250K_ARC.shp")
 
@@ -48,13 +58,14 @@ dsn <- path.expand("contours250k")
 dsn
 list.files(dsn)
 st_layers(dsn)
+>>>>>>> decbfc4a70f29799fa6440a5adfd6f36d7735f53
 
-elevation_trails <- read_sf(dsn)
+elevation_trails <- read_sf(dsn) 
 elevation_trails %>%
   select(CONTOUR_FT) %>%
   plot()
 
-st_crs(elevation_trails) 
+st_crs(elevation_trails)  
 
 ```
 
@@ -117,6 +128,13 @@ macleish_layers[["trails"]]%>%
 leaflet() %>%
   addTiles() %>%
   addPolylines(data = macleish_layers[["streams"]]) %>%
+<<<<<<< HEAD
+  addPolylines(data = macleish_layers[["trails"]], color = "brown") %>% addPolylines(data = macleish_layers[["forests"]], color = "green")  
+
+```
+
+
+=======
   addPolylines(data = macleish_layers[["trails"]], color = "brown") %>%
   addPolygons(data = macleish_layers[["forests"]], 
               weight = 1, fillOpacity = 0.2, popup = ~ Sheet1__Na, color = "green") %>%
@@ -131,3 +149,4 @@ leaflet() %>%
 >>>>>>> decbfc4a70f29799fa6440a5adfd6f36d7735f53
 
 ```
+>>>>>>> decbfc4a70f29799fa6440a5adfd6f36d7735f53
