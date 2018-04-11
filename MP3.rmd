@@ -8,7 +8,7 @@ MacLeish has approximately four miles of built trail for use by field station vi
 Supporting data includes:
 
 
-```{r eval= FALSE}
+```{r eval= FALSE} 
 url <- "http://wsgw.mass.gov/data/gispub/shape/state/contours250k.zip"
 local_file <- basename(url)
 download.file(url, destfile = local_file)  
@@ -31,7 +31,7 @@ st_crs(elevation_trails)
 ```{r} 
 library(tidyverse) 
 library(macleish)  
-library(sf)
+library(sf) 
 library(leaflet)
 library(lwgeom)
 #annah
