@@ -4,16 +4,68 @@ author: "Guadalupe Chimil, Annah Lee, Ivette Viramontes"
 date: "4/10/2018"
 output: html_document
 ---
-
 MacLeish has approximately four miles of built trail for use by field station visitors. We would like to be able to classify these trails as “Easy,” “Moderate,” or “Difficult” based on their length and change in elevation. Use the spatial data to develop a heuristic that will classify these (or any other) trails based on their difficulty.
 Supporting data includes:
+
+    Existing trails shapefile
+    10’ contour elevation data
+```{r eval= FALSE}
+url <- "http://wsgw.mass.gov/data/gispub/shape/state/contours250k.zip"
+local_file <- basename(url)
+download.file(url, destfile = local_file)
+unzip(local_file, exdir = "contours250k")
+```
 
 
 ```{r}
 library(tidyverse)
 library(macleish)
+library(sf)
+library(leaflet)
+library(lwgeom)
 #annah
-```
 
+#macleish trails, stream and etc
+#trails
+macleish_layers[["trails"]] %>%
+  st_length()
+trails <- macleish_layers[["trails"]] %>%
+  mutate(computed_length= st_length(geometry))
+#boundary
+macleish_layers[["boundary"]] %>%
+  st_area()
+
+proj4_aea <- "+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs"
+
+boundaries_aea <- macleish_layers[["boundary"]] %>%
+  st_transform(proj4_aea)
+st_area(boundaries_aea)
+
+#forests
+macleish_layers[["forests"]] %>%
+  st_area()
+
+proj4_aea <- "+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs"
+
+forests_aea <- macleish_layers[["forests"]] %>%
+  st_transform(proj4_aea)
+st_area(forests_aea)
+
+macleish_layers[["trails"]] %>%
+  st_intersects(macleish_layers[["streams"]]) 
+
+macleish_layers[["trails"]]%>%
+  st_intersects(macleish_layers[["forests"]]) 
+
+macleish_layers[["trails"]] %>%
+  st_crosses(macleish_layers[["streams"]]) 
+macleish_layers[["trails"]]%>%
+  st_crosses(macleish_layers[["forests"]]) 
+
+leaflet() %>%
+  addTiles() %>%
+  addPolylines(data = macleish_layers[["streams"]]) %>%
+  addPolylines(data = macleish_layers[["trails"]], color = "brown") %>% addPolylines(data = macleish_layers[["forests"]], color = "green")
+```
 
 
