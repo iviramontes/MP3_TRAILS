@@ -9,11 +9,24 @@ Supporting data includes:
 
     Existing trails shapefile
     10’ contour elevation data
+    
 ```{r eval= FALSE}
 url <- "http://wsgw.mass.gov/data/gispub/shape/state/contours250k.zip"
 local_file <- basename(url)
 download.file(url, destfile = local_file)
 unzip(local_file, exdir = "contours250k")
+
+dsn <- path.expand("contours250k")
+dsn
+list.files(dsn)
+st_layers(dsn)
+
+elevation_trails <- read_sf(dsn)
+elevation_trails %>%
+  select(CONTOUR_FT) %>%
+  plot()
+
+st_crs(elevation_trails)
 ```
 
 
