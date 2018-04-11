@@ -15,6 +15,9 @@ download.file(url, destfile = local_file)
 unzip(local_file, exdir = "contours250k")  
 ``` 
 
+filter, intersect, join, to modify contour
+
+
 ```{r}
 library(sf)
 contours <- st_read("../../contours250k/CONTOURS250K_ARC.shp")
