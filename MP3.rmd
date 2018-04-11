@@ -1,0 +1,11 @@
+---
+title: "Mini Project 3"
+author: "Guadalupe Chimil, Annah Lee, Ivette Viramontes"
+date: "4/10/2018"
+output: html_document
+---
+
+```{r}
+
+```
+
