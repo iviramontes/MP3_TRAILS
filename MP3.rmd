@@ -90,15 +90,12 @@ macleish_layers[["trails"]]%>%
 leaflet() %>%
   addTiles() %>%
   addPolylines(data = macleish_layers[["streams"]]) %>%
-<<<<<<< HEAD
   addPolylines(data = macleish_layers[["trails"]], color = "brown") %>%
   addPolygons(data = macleish_layers[["forests"]], 
               weight = 1, fillOpacity = 0.2, popup = ~ Sheet1__Na, color = "green") %>%
   addPolygons(data = macleish_layers[["buildings"]], 
-              weight = 1, popup = ~name, color = "red")
-=======
-  addPolylines(data = macleish_layers[["trails"]], color = "brown") %>% addPolylines(data = macleish_layers[["forests"]], color = "green") 
+              weight = 1, popup = ~name, color = "red") %>%
+  addPolygons(data = macleish_layers[["trails"]], 
+              weight = 1, popup = ~name, color = "brown")
 
 ```
-
-
