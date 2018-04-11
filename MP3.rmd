@@ -3,8 +3,14 @@ title: "Mini Project 3"
 author: "Guadalupe Chimil, Annah Lee, Ivette Viramontes"
 date: "4/10/2018"
 output: 
+<<<<<<< HEAD
 html_document:
 df_print: paged 
+=======
+  html_document:
+    code_folding: hide 
+
+>>>>>>> decbfc4a70f29799fa6440a5adfd6f36d7735f53
 ---
 MacLeish has approximately four miles of built trail for use by field station visitors. We would like to be able to classify these trails as “Easy,” “Moderate,” or “Difficult” based on their length and change in elevation. Use the spatial data to develop a heuristic that will classify these (or any other) trails based on their difficulty.
 Supporting data includes:
@@ -17,11 +23,24 @@ download.file(url, destfile = local_file)
 unzip(local_file, exdir = "contours250k")  
 ``` 
 
+filter, intersect, join, to modify contour
+
+
 ```{r}
+<<<<<<< HEAD
 dsn <- path.expand("contours250k") 
 dsn 
 list.files(dsn) 
 st_layers(dsn) 
+=======
+library(sf)
+contours <- st_read("../../contours250k/CONTOURS250K_ARC.shp")
+
+dsn <- path.expand("contours250k")
+dsn
+list.files(dsn)
+st_layers(dsn)
+>>>>>>> decbfc4a70f29799fa6440a5adfd6f36d7735f53
 
 elevation_trails <- read_sf(dsn) 
 elevation_trails %>%
@@ -67,22 +86,44 @@ forests_aea <- macleish_layers[["forests"]] %>%
   st_transform(proj4_aea)
 st_area(forests_aea)
 
+#buildings
+macleish_layers[["buildings"]] %>%
+  st_area()
+buildings_aea <- macleish_layers[["buildings"]] %>%
+  st_transform(proj4_aea)
+st_area(buildings_aea)
+
 macleish_layers[["trails"]] %>%
   st_intersects(macleish_layers[["streams"]]) 
-
 macleish_layers[["trails"]]%>%
   st_intersects(macleish_layers[["forests"]]) 
+macleish_layers[["trails"]]%>%
+  st_intersects(macleish_layers[["buildings"]]) 
 
 macleish_layers[["trails"]] %>%
   st_crosses(macleish_layers[["streams"]]) 
 macleish_layers[["trails"]]%>%
-  st_crosses(macleish_layers[["forests"]]) 
+  st_crosses(macleish_layers[["forests"]])
+macleish_layers[["trails"]]%>%
+  st_crosses(macleish_layers[["buildings"]])
 
 leaflet() %>%
   addTiles() %>%
   addPolylines(data = macleish_layers[["streams"]]) %>%
+<<<<<<< HEAD
   addPolylines(data = macleish_layers[["trails"]], color = "brown") %>% addPolylines(data = macleish_layers[["forests"]], color = "green")  
 
 ```
 
 
+=======
+  addPolylines(data = macleish_layers[["trails"]], color = "brown") %>%
+  addPolygons(data = macleish_layers[["forests"]], 
+              weight = 1, fillOpacity = 0.2, popup = ~ Sheet1__Na, color = "green") %>%
+  addPolygons(data = macleish_layers[["buildings"]], 
+              weight = 1, popup = ~name, color = "red") %>%
+  addPolygons(data = macleish_layers[["trails"]], 
+              weight = 1, popup = ~name, color = "brown")
+
+```
+>>>>>>> decbfc4a70f29799fa6440a5adfd6f36d7735f53
