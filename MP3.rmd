@@ -8,11 +8,11 @@ MacLeish has approximately four miles of built trail for use by field station vi
 Supporting data includes:
 
     Existing trails shapefile
-    10’ contour elevation data
+    10’ contour elevation data 
 ```{r eval= FALSE}
 url <- "http://wsgw.mass.gov/data/gispub/shape/state/contours250k.zip"
 local_file <- basename(url)
-download.file(url, destfile = local_file)
+download.file(url, destfile = local_file)  
 unzip(local_file, exdir = "contours250k")
 ```
 
