@@ -7,6 +7,7 @@ output: html_document
 MacLeish has approximately four miles of built trail for use by field station visitors. We would like to be able to classify these trails as “Easy,” “Moderate,” or “Difficult” based on their length and change in elevation. Use the spatial data to develop a heuristic that will classify these (or any other) trails based on their difficulty.
 Supporting data includes:
 
+<<<<<<< HEAD
     Existing trails shapefile
 <<<<<<< HEAD
     10’ contour elevation data
@@ -14,13 +15,28 @@ Supporting data includes:
 =======
     10’ contour elevation data 
 >>>>>>> 6d56df7fb62acb86f9c0d80a4e3b5532ea4955c8
+=======
+
+>>>>>>> fdd208a13210ce8caff347109e03747373cfa538
 ```{r eval= FALSE}
 url <- "http://wsgw.mass.gov/data/gispub/shape/state/contours250k.zip"
 local_file <- basename(url)
 download.file(url, destfile = local_file)  
 unzip(local_file, exdir = "contours250k")
 ```
+```{r}
+dsn <- path.expand("contours250k")
+dsn
+list.files(dsn)
+st_layers(dsn)
 
+elevation_trails <- read_sf(dsn)
+elevation_trails %>%
+  select(CONTOUR_FT) %>%
+  plot()
+
+st_crs(elevation_trails)
+```
 
 ```{r} 
 library(tidyverse) 
