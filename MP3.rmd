@@ -11,15 +11,5 @@ Supporting data includes:
     Existing trails shapefile
     10’ contour elevation data  
     
-```{r}
-library(tidyverse)
-<<<<<<< HEAD
-install.packages("macleish") 
-
-
-=======
-library(macleish)
->>>>>>> 5cd8128a507c828ff3b433b9f8a95214310a4f7c
-```
-
+    
 
