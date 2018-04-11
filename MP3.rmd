@@ -9,6 +9,7 @@ Supporting data includes:
 
     Existing trails shapefile
     10’ contour elevation data
+    
 ```{r eval= FALSE}
 url <- "http://wsgw.mass.gov/data/gispub/shape/state/contours250k.zip"
 local_file <- basename(url)
@@ -23,7 +24,7 @@ library(macleish)
 library(sf)
 library(leaflet)
 library(lwgeom)
-#annah
+
 
 #macleish trails, stream and etc
 #trails
