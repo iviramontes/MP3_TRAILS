@@ -25,9 +25,12 @@ library(lwgeom)
 
 
 ```{r} 
-maple_sap
-glimpse(maple_sap)
-
+library(tidyverse)
+library(leaflet)
+library(devtools)
+library(macleish)
+library(sf)
+library(dplyr)
 forests <- macleish_layers[["forests"]] %>%
   rename(forest_type = Sheet1__Na)
 #View(forests)
@@ -38,9 +41,18 @@ filter(forest_type == "Sugar Maple Forest")
 
 maple_map <- leaflet() %>%
   addTiles() %>%
-  addPolylines(data = macleish_layers[["boundary"]], weight = 1)
-maple_map %>%
-  addPolylines(data = mapleforests, weight = 1, color = "red")
+  # Boundaries
+  addPolygons(data = macleish_layers[["boundary"]], weight = 1, fillOpacity = 0.01, group = "Boundaries") %>%
+  addPolylines(data = macleish_layers[["boundary"]], weight = 1) %>%
+  addPolylines(data = mapleforests, weight = 3, color = "	#FF0000") %>%
+  addPolylines(data = macleish_layers[["trails"]], weight = 2, color = "#8B4513") %>%
+  addPolylines(data = macleish_layers[["streams"]], weight = 2 , color = "#191970") %>%
+  addLegend("bottomright", 
+  colors =c("#8B4513",  "#191970", "#FF0000"),
+  labels= c("trails", "streams", "Maple Forest"),
+  title= "Macleish Legend",
+  opacity = 0.7)
+maple_map 
 
-
+ 
 ```
