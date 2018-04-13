@@ -20,8 +20,21 @@ library(lwgeom)
 
 ```{r} 
 maple_sap
-glimpse(maple_sap)    
+glimpse(maple_sap)
 
+forests <- macleish_layers[["forests"]] %>%
+  rename(forest_type = Sheet1__Na)
+#View(forests)
+
+mapleforests <- forests %>%
+filter(forest_type == "Sugar Maple Forest")
+#View(mapleforests)
+
+maple_map <- leaflet() %>%
+  addTiles() %>%
+  addPolylines(data = macleish_layers[["boundary"]], weight = 1)
+maple_map %>%
+  addPolylines(data = mapleforests, weight = 1, color = "red")
 
 
 
