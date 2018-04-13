@@ -22,6 +22,6 @@ forests <- macleish_layers[["forests"]]%>%
   rename(forest_type = Sheet1_Na) 
 mapleforests <- forests %>%   
   filter(forest_type == "Sugar Maple Forest")   
-
+ 
 
 ```
