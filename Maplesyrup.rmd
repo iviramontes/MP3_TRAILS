@@ -11,11 +11,11 @@ Sap from maple trees is collected and boiled down to produce maple syrup. Collec
 
 ```{r}  
 #devtools::install_github("beanumber/macleish")
-#packageVersion("macleish") 
+#packageVersion("macleish")  
 
-library(tidyverse)
+library(tidyverse) 
 library(leaflet) 
-library(devtools) 
+library(devtools)  
 library(macleish)  
 library(sf) 
 library(dplyr) 
@@ -35,5 +35,5 @@ maple_map %>%
   addPolylines(data = mapleforests)%>%
   addPolylines(data = mapleforests, weight = 1, color = "red")  
 
-whatl
+View(whately_2015) 
 ```
