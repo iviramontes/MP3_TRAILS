@@ -71,6 +71,6 @@ whately <- whately[-c(1),] %>%
 maple_sap <- rename(maple_sap, date = when) %>%
     mutate(year = substr(date, 0, 4))
 
-
-
+syrup_data <- merge( x= maple_sap, y= whately, by = c("date", "year"), all= TRUE) 
+syrup_data <- syrup_data %>% filter(!is.na(sap))
 ```
