@@ -3,44 +3,34 @@ title: "Mini Project 3"
 author: "Guadalupe Chimil, Annah Lee, Ivette Viramontes"
 date: "4/10/2018"
 output: 
-<<<<<<< HEAD
 html_document:
-df_print: paged 
-=======
-  html_document:
-    code_folding: hide 
-
->>>>>>> decbfc4a70f29799fa6440a5adfd6f36d7735f53
+code_folding: hide  
 ---
 MacLeish has approximately four miles of built trail for use by field station visitors. We would like to be able to classify these trails as “Easy,” “Moderate,” or “Difficult” based on their length and change in elevation. Use the spatial data to develop a heuristic that will classify these (or any other) trails based on their difficulty.
-Supporting data includes:
+Supporting data includes:  
 
-
-```{r eval= FALSE}
-url <- "http://wsgw.mass.gov/data/gispub/shape/state/contours250k.zip" 
-local_file <- basename(url)   
-download.file(url, destfile = local_file)   
-unzip(local_file, exdir = "contours250k")  
+```{r eval= FALSE} 
+url <- "http://wsgw.mass.gov/data/gispub/shape/state/contours250k.zip"  
+local_file <- basename(url)    
+download.file(url, destfile = local_file)    
+unzip(local_file, exdir = "contours250k")    
 ``` 
 
 filter, intersect, join, to modify contour
 
 
 ```{r}
-<<<<<<< HEAD
 dsn <- path.expand("contours250k") 
 dsn 
 list.files(dsn) 
 st_layers(dsn) 
-=======
-library(sf)
-contours <- st_read("../../contours250k/CONTOURS250K_ARC.shp")
 
-dsn <- path.expand("contours250k")
+library(sf)
+contours <- st_read("../../contours250k/CONTOURS250K_ARC.shp") 
+dsn <- path.expand("contours250k") 
 dsn
-list.files(dsn)
-st_layers(dsn)
->>>>>>> decbfc4a70f29799fa6440a5adfd6f36d7735f53
+list.files(dsn) 
+st_layers(dsn) 
 
 elevation_trails <- read_sf(dsn) 
 elevation_trails %>%
@@ -48,7 +38,6 @@ elevation_trails %>%
   plot()
 
 st_crs(elevation_trails)  
-
 ```
 
 ```{r} 
@@ -62,8 +51,8 @@ library(lwgeom)
 
 #macleish trails, stream and etc
 #trails
-macleish_layers[["trails"]] %>%
-  st_length()
+macleish_layers[["trails"]] %>% 
+  st_length() 
 trails <- macleish_layers[["trails"]] %>%
   mutate(computed_length= st_length(geometry))
 #boundary
@@ -77,7 +66,7 @@ boundaries_aea <- macleish_layers[["boundary"]] %>%
 st_area(boundaries_aea)
 
 #forests
-macleish_layers[["forests"]] %>%
+macleish_layers[["forests"]] %>% 
   st_area()
 
 proj4_aea <- "+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs"
@@ -107,23 +96,17 @@ macleish_layers[["trails"]]%>%
 macleish_layers[["trails"]]%>%
   st_crosses(macleish_layers[["buildings"]])
 
-leaflet() %>%
+leaflet() %>%  
   addTiles() %>%
   addPolylines(data = macleish_layers[["streams"]]) %>%
-<<<<<<< HEAD
-  addPolylines(data = macleish_layers[["trails"]], color = "brown") %>% addPolylines(data = macleish_layers[["forests"]], color = "green")  
-
-```
-
-
-=======
+  addPolylines(data = macleish_layers[["trails"]], color = "brown") %>% 
+  addPolylines(data = macleish_layers[["forests"]], color = "green")%>% 
   addPolylines(data = macleish_layers[["trails"]], color = "brown") %>%
   addPolygons(data = macleish_layers[["forests"]], 
               weight = 1, fillOpacity = 0.2, popup = ~ Sheet1__Na, color = "green") %>%
   addPolygons(data = macleish_layers[["buildings"]], 
               weight = 1, popup = ~name, color = "red") %>%
   addPolygons(data = macleish_layers[["trails"]], 
-              weight = 1, popup = ~name, color = "brown")
+              weight = 1, popup = ~name, color = "brown") 
 
-```
->>>>>>> decbfc4a70f29799fa6440a5adfd6f36d7735f53
+``` 
