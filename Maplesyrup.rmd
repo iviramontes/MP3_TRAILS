@@ -31,6 +31,7 @@ library(devtools)
 library(macleish)
 library(sf)
 library(dplyr)
+library(stringr)
 forests <- macleish_layers[["forests"]] %>%
   rename(forest_type = Sheet1__Na)
 #View(forests)
@@ -60,5 +61,16 @@ whately <- mac %>%
   tbl("whately") %>%
   collect(n = Inf)
 
- 
+whately <- whately[-c(1),] %>%
+  mutate(year = substr(when, 0, 4)) %>%
+  mutate(date = substr(when, 0, 10)) %>%
+  mutate(time = substr(when, 12, 16)) %>%
+  filter(year %in% c("2013","2014","2015","2017")) %>%
+  filter(time %in% c("00:00","12:00"))
+
+maple_sap <- rename(maple_sap, date = when) %>%
+    mutate(year = substr(date, 0, 4))
+
+
+
 ```
