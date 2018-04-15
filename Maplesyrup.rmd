@@ -16,11 +16,9 @@ Sap from maple trees is collected and boiled down to produce maple syrup. Collec
 #packageVersion("macleish") 
 
 library(tidyverse)
-install.packages("macleish") 
 library(macleish)
 library(sf) 
 library(leaflet)
-library(lwgeom)  
 ```
 
 
@@ -30,16 +28,17 @@ library(leaflet)
 library(devtools)
 library(macleish)
 library(sf)
+library(ggplot2)
 library(dplyr)
-library(stringr)
+#Renaming Forests
 forests <- macleish_layers[["forests"]] %>%
   rename(forest_type = Sheet1__Na)
-#View(forests)
 
+#Maple Forests Data
 mapleforests <- forests %>%
 filter(forest_type == "Sugar Maple Forest")
-#View(mapleforests)
 
+#Maple Forests Map
 maple_map <- leaflet() %>%
   addTiles() %>%
   # Boundaries
@@ -47,20 +46,21 @@ maple_map <- leaflet() %>%
   addPolylines(data = macleish_layers[["boundary"]], weight = 1) %>%
   addPolylines(data = mapleforests, weight = 3, color = "	#FF0000") %>%
   addPolylines(data = macleish_layers[["trails"]], weight = 2, color = "#8B4513") %>%
-  addPolylines(data = macleish_layers[["streams"]], weight = 2 , color = "#191970") %>%
-  addLegend("bottomright", 
+  addPolylines(data = macleish_layers[["streams"]], weight = 2 , color = "#191970") %>% 
+  addLegend("bottomright",  
   colors =c("#8B4513",  "#191970", "#FF0000"),
   labels= c("trails", "streams", "Maple Forest"),
   title= "Macleish Legend",
   opacity = 0.7)
 maple_map 
 
-mac <- etl("macleish") %>%
-  etl_update()
-whately <- mac %>%
-  tbl("whately") %>%
-  collect(n = Inf)
+#mac <- etl("macleish") %>%
+  #etl_update()
+#whately <- mac %>%
+  #tbl("whately") %>%
+  #collect(n = Inf)
 
+# Filtering Weather Data
 whately <- whately[-c(1),] %>%
   mutate(year = substr(when, 0, 4)) %>%
   mutate(date = substr(when, 0, 10)) %>%
@@ -68,9 +68,27 @@ whately <- whately[-c(1),] %>%
   filter(year %in% c("2013","2014","2015","2017")) %>%
   filter(time %in% c("00:00","12:00"))
 
+#Renaming Maple Sap Data
 maple_sap <- rename(maple_sap, date = when) %>%
     mutate(year = substr(date, 0, 4))
 
+#Filtering and Joining Weather and Maple Sap Data
 syrup_data <- merge( x= maple_sap, y= whately, by = c("date", "year"), all= TRUE) 
-syrup_data <- syrup_data %>% filter(!is.na(sap))
+syrup_data <- syrup_data %>% filter(!is.na(sap)) 
+
+
+#Syrup Data by Year
+syrup_data2013 <- syrup_data %>% filter(year == "2013" & time == "12:00")
+syrup_data2014 <- syrup_data %>% filter(year == "2014" & time == "12:00")
+syrup_data2015 <- syrup_data %>% filter(year == "2015" & time == "12:00")
+syrup_data2017 <- syrup_data %>% filter(year == "2017" & time == "12:00")
+
+#Graphs
+syrup_plot <- ggplot(data= syrup_data2013, aes(x= data, y=as.numeric(temperature))) + geom_point(size = "sap")
+syrup_plot
+
+
+
+
+
 ```
