@@ -2,7 +2,7 @@
 title: "Maple Syrup Here We GO!!!"
 author: "Guadalupe Chimil, Annah Lee, Ivette Viramontes"
 date: "4/11/2018"
-output:
+output: 
   html_document:
     df_print: paged   
     code_folding: hide 
@@ -10,21 +10,25 @@ output:
 Sap from maple trees is collected and boiled down to produce maple syrup. Collection occurs in the early spring, during “sugaring season”. In order for the sap to run, temperatures must be above freezing during the day and below freezing at night. As spring temperatures in New England are notoriously variable, so too is the sugaring yield. Climate change also affects the beginning of spring. Use the maple_sap data on gallons of sap collected and the weather data to predict the start date, end date, and yield for sugaring season. Since you only have a few years worth of data on temperature and sap, you may need to consult external data to deepen your analysis.
 
 ```{r}   
-#devtools::install_github("beanumber/macleish")  
-#packageVersion("macleish")   
-
-library(tidyverse) 
-library(leaflet) 
+#devtools::install_github("beanumber/macleish",version="0.3.3")  
+#packageVersion("macleish")
+ 
+library(tidyverse)  
+library(macleish)
+library(leaflet)  
 library(devtools)  
-library(macleish)  
 library(sf) 
 library(ggplot) 
 library(dplyr)  
+library(stringr) 
 
+```
+
+```{r} 
 View(maple_sap)
 
 forests <- macleish_layers[["forests"]] %>%
-  rename(forest_type = Sheet1__Na)
+  rename(forest_type = Sheet1__Na) 
 View(forests) 
 
 mapleforests <- forests %>% 
@@ -39,4 +43,54 @@ maple_map %>%
   addPolylines(data = mapleforests, weight = 1, color = "red")    
 
 View(whately_2015)    
-```
+
+forests <- macleish_layers[["forests"]] %>%   
+  rename(forest_type = Sheet1__Na)
+#View(forests)
+
+mapleforests <- forests %>%
+filter(forest_type == "Sugar Maple Forest")
+#View(mapleforests)
+
+maple_map <- leaflet() %>%
+  addTiles() %>%
+  # Boundaries
+  addPolygons(data = macleish_layers[["boundary"]], weight = 1, fillOpacity = 0.01, group = "Boundaries") %>%
+  addPolylines(data = macleish_layers[["boundary"]], weight = 1) %>%
+  addPolylines(data = mapleforests, weight = 3, color = "	#FF0000") %>%
+  addPolylines(data = macleish_layers[["trails"]], weight = 2, color = "#8B4513") %>%
+  addPolylines(data = macleish_layers[["streams"]], weight = 2 , color = "#191970") %>%
+  addLegend("bottomright", 
+  colors =c("#8B4513",  "#191970", "#FF0000"),
+  labels= c("trails", "streams", "Maple Forest"),
+  title= "Macleish Legend",
+  opacity = 0.7)
+maple_map 
+
+mac <- etl("macleish") %>%
+  etl_update()
+whately <- mac %>%
+  tbl("whately") %>%
+  collect(n = Inf)
+
+whately <- whately[-c(1),] %>%
+  mutate(year = substr(when, 0, 4)) %>%
+  mutate(date = substr(when, 0, 10)) %>%
+  mutate(time = substr(when, 12, 16)) %>%
+  filter(year %in% c("2013","2014","2015","2017")) %>%
+  filter(time %in% c("00:00","12:00"))
+
+maple_sap <- rename(maple_sap, date = when) %>%
+    mutate(year = substr(date, 0, 4))
+
+syrup_data <- merge( x= maple_sap, y= whately, by = c("date", "year"), all= TRUE) 
+syrup_data <- syrup_data %>% filter(!is.na(sap)) 
+
+syrup_plot <- ggplot(syrup_data,aes(x=year,y=weather))+
+  geom_point() 
+
+syrup_plot +
+  geom_point(aes(size=sap))+
+  labs(title="Sap collected per year")
+
+``` 
