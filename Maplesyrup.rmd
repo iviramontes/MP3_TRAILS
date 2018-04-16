@@ -9,56 +9,36 @@ output:
 ---  
 Sap from maple trees is collected and boiled down to produce maple syrup. Collection occurs in the early spring, during “sugaring season”. In order for the sap to run, temperatures must be above freezing during the day and below freezing at night. As spring temperatures in New England are notoriously variable, so too is the sugaring yield. Climate change also affects the beginning of spring. Use the maple_sap data on gallons of sap collected and the weather data to predict the start date, end date, and yield for sugaring season. Since you only have a few years worth of data on temperature and sap, you may need to consult external data to deepen your analysis.
 
-<<<<<<< HEAD
 ```{r}   
 #devtools::install_github("beanumber/macleish",version="0.3.3")  
 #packageVersion("macleish")
  
-library(tidyverse)  
-=======
-```{r} 
-# devtools::install_github("beanumber/macleish")
-#library(macleish)
-#packageVersion("macleish") 
-
 library(tidyverse)
->>>>>>> f1de6879f0019317a2601dfd2be1c28590b75b50
 library(macleish)
 library(leaflet)  
 library(devtools)  
 library(sf) 
-<<<<<<< HEAD
 library(ggplot) 
 library(dplyr)  
 library(stringr) 
-=======
-library(leaflet)
+library(leaflet) 
 ```
->>>>>>> f1de6879f0019317a2601dfd2be1c28590b75b50
 
-```
 
 ```{r} 
-<<<<<<< HEAD
-View(maple_sap)
-
-=======
 library(tidyverse)
-library(leaflet)
-library(devtools)
-library(macleish)
-library(sf)
-library(ggplot2)
-library(dplyr)
+library(macleish) 
+
+#View(maple_sap)
+
 #Renaming Forests
->>>>>>> f1de6879f0019317a2601dfd2be1c28590b75b50
 forests <- macleish_layers[["forests"]] %>%
   rename(forest_type = Sheet1__Na) 
-View(forests) 
+#View(forests) 
 
 mapleforests <- forests %>% 
 filter(forest_type == "Sugar Maple Forest")
-View(mapleforests)
+#View(mapleforests)
 
 maple_map <- leaflet() %>% 
   addTiles() %>% 
@@ -67,7 +47,7 @@ maple_map %>%
   addPolylines(data = mapleforests)%>% 
   addPolylines(data = mapleforests, weight = 1, color = "red")    
 
-View(whately_2015)    
+#View(whately_2015)    
 
 forests <- macleish_layers[["forests"]] %>%   
   rename(forest_type = Sheet1__Na)
@@ -114,16 +94,12 @@ maple_sap <- rename(maple_sap, date = when) %>%
 syrup_data <- merge( x= maple_sap, y= whately, by = c("date", "year"), all= TRUE) 
 syrup_data <- syrup_data %>% filter(!is.na(sap)) 
 
-<<<<<<< HEAD
 syrup_plot <- ggplot(syrup_data,aes(x=year,y=weather))+
   geom_point() 
 
 syrup_plot +
   geom_point(aes(size=sap))+
   labs(title="Sap collected per year")
-
-``` 
-=======
 
 #Syrup Data by Year
 syrup_data2013 <- syrup_data %>% filter(year == "2013" & time == "12:00")
@@ -135,9 +111,4 @@ syrup_data2017 <- syrup_data %>% filter(year == "2017" & time == "12:00")
 syrup_plot <- ggplot(data= syrup_data2013, aes(x= data, y=as.numeric(temperature))) + geom_point(size = "sap")
 syrup_plot
 
-
-
-
-
 ```
->>>>>>> f1de6879f0019317a2601dfd2be1c28590b75b50
